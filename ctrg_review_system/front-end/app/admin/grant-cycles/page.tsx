@@ -40,7 +40,7 @@ export default function GrantCyclesPage() {
 
   const fetchCycles = () => {
     setLoading(true);
-    fetch("${API_URL}/admin/grant-cycles", { headers: authHeader() })
+    fetch('${API_URL}/admin/grant-cycles", { headers: authHeader() })
       .then((r) => r.json()).then(setCycles).catch(console.error)
       .finally(() => setLoading(false));
   };

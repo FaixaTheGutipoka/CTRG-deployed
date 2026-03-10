@@ -1,7 +1,7 @@
 "use client";
 
 import { API_URL } from "@/lib/api"
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -22,7 +22,7 @@ type Reviewer = {
   is_active: boolean;
 };
 
-export default function AssignReviewersPage() {
+function AssignReviewersContent() {
   useAuthGuard("admin");
   const searchParams = useSearchParams();
   const [proposals, setProposals] = useState<Proposal[]>([]);
@@ -38,13 +38,12 @@ export default function AssignReviewersPage() {
   const authHeader = () => ({ Authorization: "Bearer " + token() });
 
   useEffect(() => {
-    // Fetch submitted AND under_review, active cycle only
-    fetch("${API_URL}/admin/proposals?status=submitted,under_review&active_cycle_only=true", {
+    fetch('${API_URL}/admin/proposals?status=submitted,under_review&active_cycle_only=true', {
       headers: authHeader(),
     })
       .then((r) => r.json()).then(setProposals).catch(console.error);
 
-    fetch("${API_URL}/admin/reviewers", { headers: authHeader() })
+    fetch(`${API_URL}/admin/reviewers`, { headers: authHeader() })
       .then((r) => r.json())
       .then((data) => setReviewers(data.filter((r: Reviewer) => r.is_active)))
       .catch(console.error);
@@ -68,7 +67,7 @@ export default function AssignReviewersPage() {
     }
     setLoading(true); setError(null);
 
-    const res = await fetch("${API_URL}/admin/reviewers/assign", {
+    const res = await fetch(`${API_URL}/admin/reviewers/assign`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({
@@ -137,7 +136,6 @@ export default function AssignReviewersPage() {
         </div>
       </section>
 
-      {/* FIX #1: Added Expertise and Department columns, pulled from DB */}
       <section className="bg-white border rounded-md p-6 space-y-4">
         <h2 className="text-lg font-semibold text-[#061742]">Select Reviewers (1–4)</h2>
         <div className="overflow-x-auto">
@@ -186,5 +184,13 @@ export default function AssignReviewersPage() {
         This interface supports SRC Chair–controlled reviewer assignment for both Stage 1 and Stage 2.
       </div>
     </div>
+  );
+}
+
+export default function AssignReviewersPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AssignReviewersContent />
+    </Suspense>
   );
 }

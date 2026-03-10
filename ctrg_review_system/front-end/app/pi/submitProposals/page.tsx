@@ -41,14 +41,14 @@ export default function SubmitProposalPage() {
 
   // Issue #9: Fetch user profile from DB on mount
   useEffect(() => {
-    fetch("${API_URL}/auth/me", { headers: authHeader() })
+    fetch('${API_URL}/auth/me", { headers: authHeader() })
       .then((r) => r.json())
       .then((data) => {
         setProfile(data);
       })
       .catch(() => setError("Could not load your profile. Please log in again."));
     // Also fetch active cycle to pre-fill grant_cycle
-    fetch("${API_URL}/admin/grant-cycles/active")
+    fetch('${API_URL}/admin/grant-cycles/active")
       .then((r) => r.json())
       .then((cycle) => {
         if (cycle?.title) {
@@ -79,7 +79,7 @@ export default function SubmitProposalPage() {
 
     try {
       // Step 1: Create proposal with PI info from DB (auto-populated server-side)
-      const res = await fetch("${API_URL}/proposals", {
+      const res = await fetch('${API_URL}/proposals", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export default function SubmitProposalPage() {
           });
         }
         await fetch(
-          "${API_URL}/proposals/" + proposal.id + "/upload",
+          '${API_URL}/proposals/" + proposal.id + "/upload",
           {
             method: "POST",
             headers: authHeader(),

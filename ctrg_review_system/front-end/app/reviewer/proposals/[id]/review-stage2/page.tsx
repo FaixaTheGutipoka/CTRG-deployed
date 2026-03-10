@@ -37,7 +37,7 @@ export default function ReviewStage2Page() {
     if (!id) return;
     Promise.all([
       fetch(`${API_URL}/reviewer/assignments/${id}`, { headers: auth() }).then((r) => r.json()),
-      fetch("${API_URL}/reviewer/me", { headers: auth() }).then((r) => r.json()),
+      fetch('${API_URL}/reviewer/me", { headers: auth() }).then((r) => r.json()),
     ])
       .then(([d, m]) => {
         setDetail(d);
@@ -91,7 +91,7 @@ export default function ReviewStage2Page() {
   const save = async (status: "draft" | "submitted") => {
     if (!detail || submitted || locked) return;
     setSaving(true); setMsg(null); setErr(null);
-    const res = await fetch("${API_URL}/reviewer/reviews/stage2", {
+    const res = await fetch('${API_URL}/reviewer/reviews/stage2", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...auth() },
       body: JSON.stringify({
