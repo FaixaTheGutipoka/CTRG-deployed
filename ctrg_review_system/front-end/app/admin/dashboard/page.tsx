@@ -13,7 +13,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch('${API_URL}/admin/proposals/stats", {
+    fetch('${API_URL}/admin/proposals/stats', {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json())

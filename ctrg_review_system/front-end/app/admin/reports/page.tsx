@@ -24,7 +24,7 @@ export default function AdminReportsPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch('${API_URL}/admin/reports", {
+    fetch('${API_URL}/admin/reports', {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json()).then(setReports).catch(console.error)

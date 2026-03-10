@@ -47,7 +47,7 @@ export default function CreateGrantCyclePage() {
     };
 
     try {
-      const res = await fetch('${API_URL}/admin/grant-cycles", {
+      const res = await fetch('${API_URL}/admin/grant-cycles', {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
         body: JSON.stringify(body),

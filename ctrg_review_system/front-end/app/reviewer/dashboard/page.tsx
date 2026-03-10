@@ -26,7 +26,7 @@ export default function ReviewerDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch('${API_URL}/reviewer/me", {
+    fetch('${API_URL}/reviewer/me', {
       headers: { Authorization: "Bearer " + token },
     })
       .then(async (r) => {

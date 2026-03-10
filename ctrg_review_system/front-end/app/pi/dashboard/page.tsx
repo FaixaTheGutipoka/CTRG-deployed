@@ -71,14 +71,14 @@ export default function PIDashboard() {
 
     const headers = { Authorization: "Bearer " + token };
 
-    fetch('${API_URL}/proposals/my/stats", { headers })
+    fetch('${API_URL}/proposals/my/stats', { headers })
       .then((r) => r.json()).then(setStats).catch(console.error);
 
-    fetch('${API_URL}/proposals/my", { headers })
+    fetch('${API_URL}/proposals/my', { headers })
       .then((r) => r.json()).then((data) => setProposals(data.slice(0, 5)))
       .catch(console.error);
 
-    fetch('${API_URL}/notifications", { headers })
+    fetch('${API_URL}/notifications', { headers })
       .then((r) => r.json()).then((data) => {
         setNotifications(data.slice(0, 5));
         setUnreadCount(data.filter((n: Notification) => !n.is_read).length);
@@ -87,7 +87,7 @@ export default function PIDashboard() {
 
   const markRead = async (notificationId: number) => {
     const token = localStorage.getItem("token");
-    await fetch('${API_URL}/notifications/" + notificationId + "/read", {
+    await fetch('${API_URL}/notifications/' + notificationId + '/read', {
       method: "PATCH",
       headers: { Authorization: "Bearer " + token },
     });
@@ -98,7 +98,7 @@ export default function PIDashboard() {
 
   const markAllRead = async () => {
     const token = localStorage.getItem("token");
-    await fetch('${API_URL}/notifications/read-all", {
+    await fetch('${API_URL}/notifications/read-all', {
       method: "PATCH", headers: { Authorization: "Bearer " + token },
     });
     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));

@@ -98,7 +98,7 @@ export default function AdminProposalDetailPage() {
 
   useEffect(() => {
     fetchProposal();
-    fetch('${API_URL}/admin/grant-cycles/active", { headers: auth() })
+    fetch('${API_URL}/admin/grant-cycles/active', { headers: auth() })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setCycle(data))
       .catch(() => {});

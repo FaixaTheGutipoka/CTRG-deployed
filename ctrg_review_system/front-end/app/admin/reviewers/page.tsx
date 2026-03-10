@@ -35,7 +35,7 @@ export default function AdminReviewersPage() {
 
   const fetchReviewers = () => {
     setLoading(true);
-    fetch('${API_URL}/admin/reviewers", { headers: authHeader() })
+    fetch('${API_URL}/admin/reviewers', { headers: authHeader() })
       .then((r) => r.json()).then(setReviewers).catch(console.error)
       .finally(() => setLoading(false));
   };
@@ -59,7 +59,7 @@ export default function AdminReviewersPage() {
       setFormErr("Name, email and password are required."); return;
     }
     setFormLoading(true); setFormErr(null); setErr(null);
-    const res = await fetch('${API_URL}/admin/reviewers", {
+    const res = await fetch('${API_URL}/admin/reviewers', {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(formData),
