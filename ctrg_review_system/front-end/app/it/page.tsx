@@ -27,8 +27,8 @@ export default function ITDashboardPage() {
   const fetchData = async () => {
     setLoading(true);
     const [cRes, uRes] = await Promise.all([
-      fetch('${API_URL}/auth/chairman', { headers: authHeader() }),
-      fetch('${API_URL}/auth/chairman/candidates', { headers: authHeader() }),
+      fetch(`${API_URL}/auth/chairman`, { headers: authHeader() }),
+      fetch(`${API_URL}/auth/chairman/candidates`, { headers: authHeader() }),
     ]);
     const cData = await cRes.json();
     const uData = await uRes.json();
@@ -40,7 +40,7 @@ export default function ITDashboardPage() {
   const assignChairman = async () => {
     if (!selectedCandidate) return;
     setMsg(null); setErr(null);
-    const res = await fetch('${API_URL}/auth/chairman/assign', {
+    const res = await fetch(`${API_URL}/auth/chairman/assign`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ user_id: selectedCandidate.id }),
@@ -53,7 +53,7 @@ export default function ITDashboardPage() {
 
   const dismissChairman = async () => {
     setMsg(null); setErr(null);
-    const res = await fetch('${API_URL}/auth/chairman/dismiss', {
+    const res = await fetch(`${API_URL}/auth/chairman/dismiss`, {
       method: "POST", headers: authHeader(),
     });
     const d = await res.json();

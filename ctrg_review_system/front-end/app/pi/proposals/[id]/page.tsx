@@ -46,7 +46,7 @@ export default function ProposalDetailPage() {
   useEffect(() => {
     if (loading || !id) return;
     const token = localStorage.getItem("token");
-    fetch('${API_URL}/proposals/' + id, {
+    fetch(`${API_URL}/proposals/${id}`, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
@@ -67,7 +67,7 @@ export default function ProposalDetailPage() {
     setSaving(true); setSaveError(null);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch('${API_URL}/proposals/' + id, {
+      const res = await fetch(`${API_URL}/proposals/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
         body: JSON.stringify({ ...formData, status }),
@@ -78,7 +78,7 @@ export default function ProposalDetailPage() {
         const fd = new FormData();
         if (proposalFile) fd.append("proposal_file", proposalFile);
         if (suppFile) fd.append("supplementary_file", suppFile);
-        await fetch('${API_URL}/proposals/' + id + '/upload', {
+        await fetch(`${API_URL}/proposals/${id}/upload`, {
           method: "POST", headers: { Authorization: "Bearer " + token }, body: fd,
         });
       }

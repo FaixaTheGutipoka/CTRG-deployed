@@ -30,7 +30,7 @@ export default function ProposalRevisionPage() {
     if (revisedFile) fd.append("revised_file", revisedFile);
 
     try {
-      const res = await fetch('${API_URL}/proposals/' + id + '/revision', {
+      const res = await fetch(`${API_URL}/proposals/${id}/revision`, {
         method: "POST",
         headers: { Authorization: "Bearer " + token },
         body: fd,

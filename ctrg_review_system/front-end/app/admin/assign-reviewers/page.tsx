@@ -38,7 +38,7 @@ function AssignReviewersContent() {
   const authHeader = () => ({ Authorization: "Bearer " + token() });
 
   useEffect(() => {
-    fetch('${API_URL}/admin/proposals?status=submitted,under_review&active_cycle_only=true', {
+    fetch(`${API_URL}/admin/proposals?status=submitted,under_review&active_cycle_only=true`, {
       headers: authHeader(),
     })
       .then((r) => r.json()).then(setProposals).catch(console.error);

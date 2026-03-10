@@ -44,7 +44,7 @@ export default function PIProposalsPage() {
   useEffect(() => {
     if (loading) return;
     const token = localStorage.getItem("token");
-    fetch('${API_URL}/proposals/my', {
+    fetch(`${API_URL}/proposals/my`, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json())

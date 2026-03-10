@@ -43,8 +43,8 @@ export default function ReviewerProposalsPage() {
     if (!t) return;
 
     Promise.all([
-      fetch('${API_URL}/reviewer/assignments', { headers: auth() }),
-      fetch('${API_URL}/reviewer/me',          { headers: auth() }),
+      fetch(`${API_URL}/reviewer/assignments`, { headers: auth() }),
+      fetch(`${API_URL}/reviewer/me`,          { headers: auth() }),
     ])
       .then(async ([aRes, mRes]) => {
         const aData = await aRes.json();

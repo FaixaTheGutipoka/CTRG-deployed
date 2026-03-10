@@ -30,7 +30,7 @@ export default function PastSubmissionsPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch('${API_URL}/admin/reports/past-submissions', {
+    fetch(`${API_URL}/admin/reports/past-submissions`, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json()).then((data) => {
