@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -38,12 +39,12 @@ export default function AssignReviewersPage() {
 
   useEffect(() => {
     // Fetch submitted AND under_review, active cycle only
-    fetch("http://localhost:8000/admin/proposals?status=submitted,under_review&active_cycle_only=true", {
+    fetch("${API_URL}/admin/proposals?status=submitted,under_review&active_cycle_only=true", {
       headers: authHeader(),
     })
       .then((r) => r.json()).then(setProposals).catch(console.error);
 
-    fetch("http://localhost:8000/admin/reviewers", { headers: authHeader() })
+    fetch("${API_URL}/admin/reviewers", { headers: authHeader() })
       .then((r) => r.json())
       .then((data) => setReviewers(data.filter((r: Reviewer) => r.is_active)))
       .catch(console.error);
@@ -67,7 +68,7 @@ export default function AssignReviewersPage() {
     }
     setLoading(true); setError(null);
 
-    const res = await fetch("http://localhost:8000/admin/reviewers/assign", {
+    const res = await fetch("${API_URL}/admin/reviewers/assign", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({

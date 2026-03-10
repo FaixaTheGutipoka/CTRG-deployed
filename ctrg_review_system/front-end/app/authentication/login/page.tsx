@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -29,7 +30,7 @@ export default function LoginPage() {
 const onSubmit = async (data: LoginFormValues) => {
   setLoginErr(null);
   try {
-    const res = await fetch("http://localhost:8000/auth/login", {
+    const res = await fetch("${API_URL}/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: data.email, password: data.password }),

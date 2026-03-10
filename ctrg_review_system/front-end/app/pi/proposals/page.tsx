@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -43,7 +44,7 @@ export default function PIProposalsPage() {
   useEffect(() => {
     if (loading) return;
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8000/proposals/my", {
+    fetch("${API_URL}/proposals/my", {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json())

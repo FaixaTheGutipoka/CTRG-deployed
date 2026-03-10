@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -46,7 +47,7 @@ export default function CreateGrantCyclePage() {
     };
 
     try {
-      const res = await fetch("http://localhost:8000/admin/grant-cycles", {
+      const res = await fetch("${API_URL}/admin/grant-cycles", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
         body: JSON.stringify(body),

@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -23,7 +24,7 @@ export default function AdminReportsPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8000/admin/reports", {
+    fetch("${API_URL}/admin/reports", {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json()).then(setReports).catch(console.error)

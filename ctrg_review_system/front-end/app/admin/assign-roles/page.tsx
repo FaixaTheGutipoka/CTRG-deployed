@@ -1,5 +1,7 @@
 // front-end/app/admin/assign-roles/page.tsx
 "use client";
+
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -41,7 +43,7 @@ export default function AssignRolesPage() {
 
   const fetchUsers = () => {
     setLoading(true);
-    fetch("http://localhost:8000/admin/reviewers/users", { headers: authHeader() })
+    fetch("${API_URL}/admin/reviewers/users", { headers: authHeader() })
       .then((r) => r.json())
       .then(setUsers)
       .catch(console.error)
@@ -51,14 +53,14 @@ export default function AssignRolesPage() {
   useEffect(() => {
     fetchUsers();
     // Check if there's an active cycle (required to assign reviewer role)
-    fetch("http://localhost:8000/admin/grant-cycles/active", { headers: authHeader() })
+    fetch("${API_URL}/admin/grant-cycles/active", { headers: authHeader() })
       .then((r) => { setHasCycle(r.ok); })
       .catch(() => setHasCycle(false));
   }, []);
 
   const assignReviewer = async (userId: number) => {
     setPendingId(userId); setMsg(null); setErr(null);
-    const res = await fetch("http://localhost:8000/admin/reviewers/assign-role", {
+    const res = await fetch("${API_URL}/admin/reviewers/assign-role", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ user_id: userId }),
@@ -77,7 +79,7 @@ export default function AssignRolesPage() {
       setFormErr("Name, email and password are required."); return;
     }
     setFormLoading(true); setFormErr(null);
-    const res = await fetch("http://localhost:8000/admin/reviewers/add-user", {
+    const res = await fetch("${API_URL}/admin/reviewers/add-user", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(userForm),
@@ -99,7 +101,7 @@ export default function AssignRolesPage() {
       setFormErr("Name, email and password are required."); return;
     }
     setFormLoading(true); setFormErr(null);
-    const res = await fetch("http://localhost:8000/admin/reviewers", {
+    const res = await fetch("${API_URL}/admin/reviewers", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(reviewerForm),

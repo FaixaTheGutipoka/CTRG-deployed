@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useRef, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -29,7 +30,7 @@ export default function PastSubmissionsPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8000/admin/reports/past-submissions", {
+    fetch("${API_URL}/admin/reports/past-submissions", {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json()).then((data) => {

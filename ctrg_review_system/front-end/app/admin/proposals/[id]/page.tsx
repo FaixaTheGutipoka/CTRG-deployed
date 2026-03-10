@@ -1,5 +1,7 @@
 // front-end/app/admin/proposals/[id]/page.tsx
 "use client";
+
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -87,7 +89,7 @@ export default function AdminProposalDetailPage() {
   const auth = () => ({ Authorization: "Bearer " + token() });
 
   const fetchProposal = () => {
-    fetch(`http://localhost:8000/admin/proposals/${id}`, { headers: auth() })
+    fetch(`${API_URL}/admin/proposals/${id}`, { headers: auth() })
       .then((r) => r.json())
       .then(setProposal)
       .catch(console.error)
@@ -96,7 +98,7 @@ export default function AdminProposalDetailPage() {
 
   useEffect(() => {
     fetchProposal();
-    fetch("http://localhost:8000/admin/grant-cycles/active", { headers: auth() })
+    fetch("${API_URL}/admin/grant-cycles/active", { headers: auth() })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setCycle(data))
       .catch(() => {});
@@ -113,7 +115,7 @@ export default function AdminProposalDetailPage() {
 
   const downloadZip = async () => {
     const res = await fetch(
-      `http://localhost:8000/proposals/${id}/files/download-zip`,
+      `${API_URL}/proposals/${id}/files/download-zip`,
       { headers: auth() }
     );
     if (!res.ok) { alert("Files not available."); return; }
@@ -126,7 +128,7 @@ export default function AdminProposalDetailPage() {
 
   const downloadFile = async (type: string) => {
     const res = await fetch(
-      `http://localhost:8000/proposals/${id}/download/${type}`,
+      `${API_URL}/proposals/${id}/download/${type}`,
       { headers: auth() }
     );
     if (!res.ok) { alert("File not available."); return; }
@@ -190,7 +192,7 @@ export default function AdminProposalDetailPage() {
           {canPushStage1 && (
             <button
               disabled={acting}
-              onClick={() => doAction(`http://localhost:8000/admin/proposals/${id}/push-stage1`)}
+              onClick={() => doAction(`${API_URL}/admin/proposals/${id}/push-stage1`)}
               className="px-4 py-2 bg-blue-700 text-white text-sm rounded hover:bg-blue-800 disabled:opacity-50"
             >
               Push to Stage 1
@@ -199,7 +201,7 @@ export default function AdminProposalDetailPage() {
           {canPushStage2 && (
             <button
               disabled={acting}
-              onClick={() => doAction(`http://localhost:8000/admin/proposals/${id}/push-stage2`)}
+              onClick={() => doAction(`${API_URL}/admin/proposals/${id}/push-stage2`)}
               className="px-4 py-2 bg-indigo-700 text-white text-sm rounded hover:bg-indigo-800 disabled:opacity-50"
             >
               Push to Stage 2
@@ -208,7 +210,7 @@ export default function AdminProposalDetailPage() {
           {canApprove && (
             <button
               disabled={acting}
-              onClick={() => doAction(`http://localhost:8000/admin/proposals/${id}/approve`)}
+              onClick={() => doAction(`${API_URL}/admin/proposals/${id}/approve`)}
               className="px-4 py-2 bg-green-700 text-white text-sm rounded hover:bg-green-800 disabled:opacity-50"
             >
               ✓ Approve
@@ -217,7 +219,7 @@ export default function AdminProposalDetailPage() {
           {canReject && (
             <button
               disabled={acting}
-              onClick={() => doAction(`http://localhost:8000/admin/proposals/${id}/reject`)}
+              onClick={() => doAction(`${API_URL}/admin/proposals/${id}/reject`)}
               className="px-4 py-2 bg-red-700 text-white text-sm rounded hover:bg-red-800 disabled:opacity-50"
             >
               ✗ Reject
@@ -226,7 +228,7 @@ export default function AdminProposalDetailPage() {
           {canRequestRevision && (
             <button
               disabled={acting}
-              onClick={() => doAction(`http://localhost:8000/admin/proposals/${id}/request-revision`)}
+              onClick={() => doAction(`${API_URL}/admin/proposals/${id}/request-revision`)}
               className="px-4 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700 disabled:opacity-50"
             >
               Request Revision ({proposal.revision_count}/3)

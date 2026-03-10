@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -70,14 +71,14 @@ export default function PIDashboard() {
 
     const headers = { Authorization: "Bearer " + token };
 
-    fetch("http://localhost:8000/proposals/my/stats", { headers })
+    fetch("${API_URL}/proposals/my/stats", { headers })
       .then((r) => r.json()).then(setStats).catch(console.error);
 
-    fetch("http://localhost:8000/proposals/my", { headers })
+    fetch("${API_URL}/proposals/my", { headers })
       .then((r) => r.json()).then((data) => setProposals(data.slice(0, 5)))
       .catch(console.error);
 
-    fetch("http://localhost:8000/notifications", { headers })
+    fetch("${API_URL}/notifications", { headers })
       .then((r) => r.json()).then((data) => {
         setNotifications(data.slice(0, 5));
         setUnreadCount(data.filter((n: Notification) => !n.is_read).length);
@@ -86,7 +87,7 @@ export default function PIDashboard() {
 
   const markRead = async (notificationId: number) => {
     const token = localStorage.getItem("token");
-    await fetch("http://localhost:8000/notifications/" + notificationId + "/read", {
+    await fetch("${API_URL}/notifications/" + notificationId + "/read", {
       method: "PATCH",
       headers: { Authorization: "Bearer " + token },
     });
@@ -97,7 +98,7 @@ export default function PIDashboard() {
 
   const markAllRead = async () => {
     const token = localStorage.getItem("token");
-    await fetch("http://localhost:8000/notifications/read-all", {
+    await fetch("${API_URL}/notifications/read-all", {
       method: "PATCH", headers: { Authorization: "Bearer " + token },
     });
     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));

@@ -1,17 +1,18 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite:///./ctrg.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./ctrg.db")
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False},  # SQLite only — remove for PostgreSQL
-)
+# Render gives postgres://, SQLAlchemy needs postgresql://
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
 Base = declarative_base()
-
 
 def get_db():
     db = SessionLocal()
@@ -19,3 +20,14 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+'''
+
+### 1b. Update `requirements.txt`
+
+Make sure `ctrg_review_system/back-end/requirements.txt` includes:
+
+psycopg2-binary
+python-dotenv
+'''

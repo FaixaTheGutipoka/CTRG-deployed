@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -39,7 +40,7 @@ export default function GrantCyclesPage() {
 
   const fetchCycles = () => {
     setLoading(true);
-    fetch("http://localhost:8000/admin/grant-cycles", { headers: authHeader() })
+    fetch("${API_URL}/admin/grant-cycles", { headers: authHeader() })
       .then((r) => r.json()).then(setCycles).catch(console.error)
       .finally(() => setLoading(false));
   };
@@ -74,7 +75,7 @@ export default function GrantCyclesPage() {
   const saveEdit = async () => {
     if (!editingCycle) return;
     setEditLoading(true); setEditErr(null);
-    const res = await fetch(`http://localhost:8000/admin/grant-cycles/${editingCycle.id}`, {
+    const res = await fetch(`${API_URL}/admin/grant-cycles/${editingCycle.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(editForm),
@@ -140,12 +141,12 @@ export default function GrantCyclesPage() {
                   Edit Cycle
                 </button>
                 {!c.is_active ? (
-                  <button onClick={() => action(`http://localhost:8000/admin/grant-cycles/${c.id}/activate`)}
+                  <button onClick={() => action(`${API_URL}/admin/grant-cycles/${c.id}/activate`)}
                     className="px-3 py-1.5 text-xs bg-green-600 text-white rounded hover:bg-green-700">
                     Activate
                   </button>
                 ) : (
-                  <button onClick={() => action(`http://localhost:8000/admin/grant-cycles/${c.id}/deactivate`)}
+                  <button onClick={() => action(`${API_URL}/admin/grant-cycles/${c.id}/deactivate`)}
                     className="px-3 py-1.5 text-xs bg-yellow-500 text-white rounded hover:bg-yellow-600">
                     Close Cycle
                   </button>
@@ -153,7 +154,7 @@ export default function GrantCyclesPage() {
                 <button
                   onClick={() => {
                     if (confirm("This will delete all reviewer entries and reset roles to user. Continue?"))
-                      action(`http://localhost:8000/admin/grant-cycles/${c.id}/reset-roles`);
+                      action(`${API_URL}/admin/grant-cycles/${c.id}/reset-roles`);
                   }}
                   className="px-3 py-1.5 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">
                   Reset Roles

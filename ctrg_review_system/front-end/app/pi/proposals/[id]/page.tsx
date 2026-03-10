@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import { useParams, useRouter } from "next/navigation";
@@ -45,7 +46,7 @@ export default function ProposalDetailPage() {
   useEffect(() => {
     if (loading || !id) return;
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8000/proposals/" + id, {
+    fetch("${API_URL}/proposals/" + id, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })
@@ -66,7 +67,7 @@ export default function ProposalDetailPage() {
     setSaving(true); setSaveError(null);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:8000/proposals/" + id, {
+      const res = await fetch("${API_URL}/proposals/" + id, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
         body: JSON.stringify({ ...formData, status }),
@@ -77,7 +78,7 @@ export default function ProposalDetailPage() {
         const fd = new FormData();
         if (proposalFile) fd.append("proposal_file", proposalFile);
         if (suppFile) fd.append("supplementary_file", suppFile);
-        await fetch("http://localhost:8000/proposals/" + id + "/upload", {
+        await fetch("${API_URL}/proposals/" + id + "/upload", {
           method: "POST", headers: { Authorization: "Bearer " + token }, body: fd,
         });
       }
@@ -94,7 +95,7 @@ export default function ProposalDetailPage() {
 
   const handleDownload = (type: "file" | "supplementary") => {
     const token = localStorage.getItem("token");
-    const url = `http://localhost:8000/proposals/${id}/${type === "file" ? "file" : "supplementary"}`;
+    const url = `${API_URL}/proposals/${id}/${type === "file" ? "file" : "supplementary"}`;
     fetch(url, { headers: { Authorization: "Bearer " + token } })
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.blob(); })
       .then((blob) => {

@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -25,7 +26,7 @@ export default function ReviewerDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch("http://localhost:8000/reviewer/me", {
+    fetch("${API_URL}/reviewer/me", {
       headers: { Authorization: "Bearer " + token },
     })
       .then(async (r) => {

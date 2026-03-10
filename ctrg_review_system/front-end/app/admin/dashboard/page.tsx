@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -12,7 +13,7 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch("http://localhost:8000/admin/proposals/stats", {
+    fetch("${API_URL}/admin/proposals/stats", {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => r.json())

@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -60,7 +61,7 @@ export default function CycleReportPage() {
   useEffect(() => {
     if (!id) return;
     const token = localStorage.getItem("token");
-    fetch(`http://localhost:8000/admin/reports/${id}`, {
+    fetch(`${API_URL}/admin/reports/${id}`, {
       headers: { Authorization: "Bearer " + token },
     })
       .then((r) => { if (!r.ok) throw new Error("Not found"); return r.json(); })

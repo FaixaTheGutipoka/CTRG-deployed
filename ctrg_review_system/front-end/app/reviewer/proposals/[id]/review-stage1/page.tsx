@@ -1,5 +1,7 @@
 // front-end/app/reviewer/proposals/[id]/review-stage1/page.tsx
 "use client";
+
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -50,8 +52,8 @@ export default function ReviewStage1Page() {
   useEffect(() => {
     if (!id) return;
     Promise.all([
-      fetch(`http://localhost:8000/reviewer/assignments/${id}`, { headers: auth() }).then((r) => r.json()),
-      fetch("http://localhost:8000/reviewer/me", { headers: auth() }).then((r) => r.json()),
+      fetch(`${API_URL}/reviewer/assignments/${id}`, { headers: auth() }).then((r) => r.json()),
+      fetch("${API_URL}/reviewer/me", { headers: auth() }).then((r) => r.json()),
     ])
       .then(([d, m]) => {
         setDetail(d);
@@ -90,7 +92,7 @@ export default function ReviewStage1Page() {
   // Issue #14: Download all as zip
   const downloadZip = async () => {
     const res = await fetch(
-      `http://localhost:8000/proposals/${id}/files/download-zip`,
+      `${API_URL}/proposals/${id}/files/download-zip`,
       { headers: auth() }
     );
     if (!res.ok) { alert("Files not available."); return; }
@@ -105,7 +107,7 @@ export default function ReviewStage1Page() {
 
   const downloadFile = async (type: "proposal" | "supplementary") => {
     const res = await fetch(
-      `http://localhost:8000/proposals/${id}/download/${type}`,
+      `${API_URL}/proposals/${id}/download/${type}`,
       { headers: auth() }
     );
     if (!res.ok) { alert("File not available."); return; }
@@ -121,7 +123,7 @@ export default function ReviewStage1Page() {
   const save = async (status: "draft" | "submitted") => {
     if (!detail || isReadOnly) return;
     setSaving(true); setMsg(null); setErr(null);
-    const res = await fetch("http://localhost:8000/reviewer/reviews/stage1", {
+    const res = await fetch("${API_URL}/reviewer/reviews/stage1", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...auth() },
       body: JSON.stringify({

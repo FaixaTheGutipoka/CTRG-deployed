@@ -1,3 +1,5 @@
+
+import { API_URL } from "@/lib/api"
 import LayoutClient from "@/components/LayoutClient";
 
 export default function PILayout({

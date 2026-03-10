@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -29,7 +30,7 @@ export default function ProposalRevisionPage() {
     if (revisedFile) fd.append("revised_file", revisedFile);
 
     try {
-      const res = await fetch("http://localhost:8000/proposals/" + id + "/revision", {
+      const res = await fetch("${API_URL}/proposals/" + id + "/revision", {
         method: "POST",
         headers: { Authorization: "Bearer " + token },
         body: fd,

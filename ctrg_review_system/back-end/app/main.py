@@ -4,12 +4,18 @@ from app.database import engine, Base
 from app.models.models import User, Proposal, Notification, GrantCycle, Reviewer, Assignment, Review  # noqa: F401
 from app.routes import auth, proposals, notifications, admin_proposals, grant_cycles, reviewers, reports, reviewer
 
+import os
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-local-dev-key")
+
 app = FastAPI(title="CTRG API")
 
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://*.vercel.app",        # covers all your Vercel previews
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

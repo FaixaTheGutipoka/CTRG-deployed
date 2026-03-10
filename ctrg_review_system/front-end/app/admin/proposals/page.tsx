@@ -1,5 +1,7 @@
 // front-end/app/admin/proposals/page.tsx
 "use client";
+
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -49,7 +51,7 @@ export default function AdminProposalsPage() {
   const fetchProposals = () => {
     setLoading(true);
     const qs = statusFilter ? `?status=${statusFilter}` : "";
-    fetch(`http://localhost:8000/admin/proposals${qs}`, { headers: auth() })
+    fetch(`${API_URL}/admin/proposals${qs}`, { headers: auth() })
       .then((r) => r.json())
       .then(setProposals)
       .catch(console.error)
@@ -58,7 +60,7 @@ export default function AdminProposalsPage() {
 
   useEffect(() => {
     fetchProposals();
-    fetch("http://localhost:8000/admin/grant-cycles/active", { headers: auth() })
+    fetch("${API_URL}/admin/grant-cycles/active", { headers: auth() })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setCycle(data))
       .catch(() => {});
@@ -103,7 +105,7 @@ export default function AdminProposalsPage() {
           {hasSubmitted && (
             <button
               disabled={acting || !submissionClosed}
-              onClick={() => doAction("http://localhost:8000/admin/proposals/push-stage1")}
+              onClick={() => doAction("${API_URL}/admin/proposals/push-stage1")}
               title={!submissionClosed ? "Cannot push before submission deadline" : ""}
               className="px-4 py-2 bg-blue-700 text-white text-sm rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -114,7 +116,7 @@ export default function AdminProposalsPage() {
           {hasStage1Ready && (
             <button
               disabled={acting || !stage1Closed}
-              onClick={() => doAction("http://localhost:8000/admin/proposals/push-stage2")}
+              onClick={() => doAction("${API_URL}/admin/proposals/push-stage2")}
               title={!stage1Closed ? "Cannot push before Stage 1 deadline" : ""}
               className="px-4 py-2 bg-indigo-700 text-white text-sm rounded hover:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -125,7 +127,7 @@ export default function AdminProposalsPage() {
           {hasStage2Approvable && (
             <button
               disabled={acting}
-              onClick={() => doAction("http://localhost:8000/admin/proposals/approve-all")}
+              onClick={() => doAction("${API_URL}/admin/proposals/approve-all")}
               className="px-4 py-2 bg-green-700 text-white text-sm rounded hover:bg-green-800 disabled:opacity-50"
             >
               Approve All Stage 2

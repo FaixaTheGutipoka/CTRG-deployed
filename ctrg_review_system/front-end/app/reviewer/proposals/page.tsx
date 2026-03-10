@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -42,8 +43,8 @@ export default function ReviewerProposalsPage() {
     if (!t) return;
 
     Promise.all([
-      fetch("http://localhost:8000/reviewer/assignments", { headers: auth() }),
-      fetch("http://localhost:8000/reviewer/me",          { headers: auth() }),
+      fetch("${API_URL}/reviewer/assignments", { headers: auth() }),
+      fetch("${API_URL}/reviewer/me",          { headers: auth() }),
     ])
       .then(async ([aRes, mRes]) => {
         const aData = await aRes.json();
@@ -64,7 +65,7 @@ export default function ReviewerProposalsPage() {
   // Issue #4: authenticated file download
   const downloadFile = async (proposalId: number) => {
     const res = await fetch(
-      `http://localhost:8000/proposals/${proposalId}/download/proposal`,
+      `${API_URL}/proposals/${proposalId}/download/proposal`,
       { headers: auth() }
     );
     if (!res.ok) { alert("File not available."); return; }

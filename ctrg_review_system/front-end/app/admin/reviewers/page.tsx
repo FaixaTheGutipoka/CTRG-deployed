@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import useAuthGuard from "@/components/useAuthGuard";
 
@@ -34,7 +35,7 @@ export default function AdminReviewersPage() {
 
   const fetchReviewers = () => {
     setLoading(true);
-    fetch("http://localhost:8000/admin/reviewers", { headers: authHeader() })
+    fetch("${API_URL}/admin/reviewers", { headers: authHeader() })
       .then((r) => r.json()).then(setReviewers).catch(console.error)
       .finally(() => setLoading(false));
   };
@@ -44,8 +45,8 @@ export default function AdminReviewersPage() {
   const toggleActive = async (r: Reviewer) => {
     setMsg(null); setErr(null);
     const url = r.is_active
-      ? `http://localhost:8000/admin/reviewers/${r.id}/deactivate`
-      : `http://localhost:8000/admin/reviewers/${r.id}/activate`;
+      ? `${API_URL}/admin/reviewers/${r.id}/deactivate`
+      : `${API_URL}/admin/reviewers/${r.id}/activate`;
     const res = await fetch(url, { method: "PATCH", headers: authHeader() });
     if (!res.ok) { const d = await res.json(); setErr(d.detail || "Failed"); return; }
     const d = await res.json();
@@ -58,7 +59,7 @@ export default function AdminReviewersPage() {
       setFormErr("Name, email and password are required."); return;
     }
     setFormLoading(true); setFormErr(null); setErr(null);
-    const res = await fetch("http://localhost:8000/admin/reviewers", {
+    const res = await fetch("${API_URL}/admin/reviewers", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(formData),

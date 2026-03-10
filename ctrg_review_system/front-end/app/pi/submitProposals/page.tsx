@@ -1,5 +1,7 @@
 // front-end/app/pi/submitProposals/page.tsx
 "use client";
+
+import { API_URL } from "@/lib/api"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthGuard from "@/components/useAuthGuard";
@@ -39,14 +41,14 @@ export default function SubmitProposalPage() {
 
   // Issue #9: Fetch user profile from DB on mount
   useEffect(() => {
-    fetch("http://localhost:8000/auth/me", { headers: authHeader() })
+    fetch("${API_URL}/auth/me", { headers: authHeader() })
       .then((r) => r.json())
       .then((data) => {
         setProfile(data);
       })
       .catch(() => setError("Could not load your profile. Please log in again."));
     // Also fetch active cycle to pre-fill grant_cycle
-    fetch("http://localhost:8000/admin/grant-cycles/active")
+    fetch("${API_URL}/admin/grant-cycles/active")
       .then((r) => r.json())
       .then((cycle) => {
         if (cycle?.title) {
@@ -77,7 +79,7 @@ export default function SubmitProposalPage() {
 
     try {
       // Step 1: Create proposal with PI info from DB (auto-populated server-side)
-      const res = await fetch("http://localhost:8000/proposals", {
+      const res = await fetch("${API_URL}/proposals", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +114,7 @@ export default function SubmitProposalPage() {
           });
         }
         await fetch(
-          "http://localhost:8000/proposals/" + proposal.id + "/upload",
+          "${API_URL}/proposals/" + proposal.id + "/upload",
           {
             method: "POST",
             headers: authHeader(),

@@ -1,5 +1,6 @@
 "use client";
 
+import { API_URL } from "@/lib/api"
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
