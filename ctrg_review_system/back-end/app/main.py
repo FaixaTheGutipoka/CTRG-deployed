@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware import cors
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.models.models import User, Proposal, Notification, GrantCycle, Reviewer, Assignment, Review  # noqa: F401
@@ -10,16 +11,31 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback-local-dev-key")
 app = FastAPI(title="CTRG API")
 
 # CORS
+#app.add_middleware(
+    #CORSMiddleware,
+    #allow_origins=[
+        #"http://localhost:3000",
+        #"https://*.vercel.app",        # covers all Vercel previews
+    #],
+    #allow_credentials=True,
+    #allow_methods=["*"],
+    #allow_headers=["*"],
+#)
+
+#app.use(cors()); # Default is '*'
+
+#app.use(cors({
+  #origin: '*'
+#}));
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://*.vercel.app",        # covers all Vercel previews
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Create all tables on startup
 Base.metadata.create_all(bind=engine)
