@@ -14,7 +14,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://ctrg-deployed.vercel.app",        # covers all your Vercel previews
+        "https://*.vercel.app",        # covers all Vercel previews
     ],
     allow_credentials=True,
     allow_methods=["*"],
